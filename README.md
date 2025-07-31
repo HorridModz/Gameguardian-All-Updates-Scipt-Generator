@@ -1,6 +1,6 @@
 # Gameguardian All Updates Script Generator
 
-![demo.png](..%2F..%2F..%2F..%2FDownloads%2Fdemo.png)
+![demo.png](demo.png)
 
 This CLI tool allows you to make a Gameguardian script that works for all updates. It uses AOB (array of bytes) searching techniques to dynamically find a target function, even if the offset or name of the function changes. This allows you to make scripts that rely on specific functions - such as hex patching, hooking, or function calling - that will not break when offsets change in the next update.
 
