@@ -12,8 +12,10 @@ Note that this technique is not foolproof. If the function's code is edited, it 
 
 # Usage
 
+This tool is available as a CLI application. Download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal.
+
 > [!TIP]
-> To see help (a comprehensive list of instructions for using the tool), run:
+> To see help (a comprehensive list of instructions for using the tool with detailed descriptions for every command and parameter), run:
 > ```sh
 > all_script_generator -h
 > ```
