@@ -12,17 +12,27 @@ Note that this technique is not foolproof. If the function's code is edited, it 
 
 # Usage
 
-This tool is available as a CLI application. Download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal.
+If you would like to jump ahead to instructions for using your generated script template, see [Generated Scripts](#generated-scripts).
+
+### Installation
+
+This tool is available as a CLI application. For Windows users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal.
+
+For other platforms, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/tag/V1.0), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
+```sh
+pip install -r requirements.txt
+```
+
+> [!NOTE]
+> While everything in this tool should be cross-platform, it has only been tested on Windows. Support for other platforms is not guaranteed.
+
+### Commands
 
 > [!TIP]
 > To see help (a comprehensive list of instructions for using the tool with detailed descriptions for every command and parameter), run:
 > ```sh
 > all_script_generator -h
 > ```
-
-If you would like to jump ahead to instructions for using your generated script template, see [Generated Scripts](#generated-scripts).
-
-### Commands
 
 To generate a group search from a lib file and offset:
 
