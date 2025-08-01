@@ -1,6 +1,6 @@
 .dmypy.json
 .idea/*
 venv/git rm -r
-dist/all_updates_generator.zip
-src/all_updates_generator.spec
+all_updates_generator.zip
+all_updates_generator.spec
 build/*
