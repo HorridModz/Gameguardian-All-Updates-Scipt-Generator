@@ -124,6 +124,7 @@ Options:
 """
 
 SIMPLIFIED_HELP_MESSAGE = """SIMPLIFIED HELP | Run "all_updates_generator -h" for full help
+
 Gameguardian All Updates Script Generator by HorridModz
 Generates gameguardian scripts that work on all updates of a game using pattern scanning
 https://github.com/HorridModz/Gameguardian-All-Updates-Script-Generator
@@ -218,6 +219,8 @@ To configure logging, run "all_updates_generator change_logging_level", with the
 """
 
 
+__all__ = ["main"]
+
 # Add src to system path for relative imports
 import sys
 import os
@@ -245,16 +248,21 @@ def print_result(message: str) -> None:
     else:
         print(message)
 
-def main():
-    args = docopt(__doc__, help=True, version="Gameguardian All Updates Script Generator V1.0")
-
-    if len(sys.argv) == 1:
+def main(argv = None):
+    if argv is None:
+        argv = sys.argv
+    if len(argv) == 1:
         # No arguments provided - show help
         print(__doc__)
         exit()
-    if args["--simplified_help"]:
+
+    # HACK: For some reason docopt doesn't recognize the --simplified_help flag and errors (displaying usage
+    #  instructions and exiting) when I try to run it on "all_updates_generator --simplified_help". So, let's check
+    # for the flag before docopt runs.
+    if "--simplified_help" in argv:
         print(SIMPLIFIED_HELP_MESSAGE)
         exit()
+    args = docopt(__doc__, argv, help=True, version="Gameguardian All Updates Script Generator V1.0")
 
     # noinspection PyTypeChecker,IncorrectFormatting,PyShadowingNames
     schema = Schema({Optional("<lib_file>"): And(And(os.path.exists, error=f"File {args['<lib_file>']} not found"),
@@ -373,5 +381,6 @@ def main():
             print_result(f"Successfully wrote generated script to file {output_path} - open the file and follow the "
                          "instructions at the top, then it will be ready to go!")
 
+
 if __name__ == "__main__":
-    main()
+    main(['all_updates_generator', "--simplified_help"])
