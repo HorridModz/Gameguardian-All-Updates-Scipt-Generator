@@ -209,13 +209,6 @@ These changes are permanent. If you would like to change logging level for a sin
 > [!NOTE]
 > Logging configuration is stored in a config file (`loggingconfig.json`). If you move the .exe file to a new location, make sure to also copy this config file so you do not lose your logging preferences.
 
-# TODO: Auto Repair
-
-The generated script is supplied a list of all values (with their offsets from beginning). If the search fails (meaning function changed), script will search every value to find the ones that still work and construct a new search using the best ones - the same technique done here, but on the Lua side. It can then update the script with the new search, and remove the values that no longer work.
-In theory, it is possible to do everything from the Lua side. Doing it in Python is easier, hence this tool - though the all updates generator *could* just be a self-editing script that you supply your offset to and run in-game.
-
-**This feature is todo because it's not really worth the work of implementing. If the search breaks, simply find the offset of the function in the new game version and generate a new script. Or, manually search the values in the existing script and remove the ones that no longer work (this may not work, but it often does).**
-
 # Building
 
 Install required modules with pip:
@@ -224,16 +217,22 @@ Install required modules with pip:
 pip install -r dev-requirements.txt
 ```
 
-And run pyinstaller via the `build.py` script (*do not run pyinstaller manually - some things have to be manually linked in*):
+And run pyinstaller via your platform's `build.py` script (*do not run pyinstaller manually - some things have to be manually linked in*). The scripts for each platform are in `Build Scripts`, named `build_X.py`:
 
 ```sh
-cd src
-py ../build.py 
+py "../Build Scripts Windows/build_windows.py"
 ```
 
 The `build.py` script will find the paths to your `keystone-engine` and `capstone` modules and manually link them into the built exe. Note that semicolons in these paths may break things - I haven't tested it.
 
-The generated exe will be at `dist/all_updates_generator/all_updates_generator.exe`.
+The generated exe will be at `dist/PLATFORM/all_updates_generator/all_updates_generator.exe`.
 
 > [!NOTE]
 > You can edit the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
+
+# TODO: Auto Repair
+
+The generated script is supplied a list of all values (with their offsets from beginning). If the search fails (meaning function changed), script will search every value to find the ones that still work and construct a new search using the best ones - the same technique done here, but on the Lua side. It can then update the script with the new search, and remove the values that no longer work.
+In theory, it is possible to do everything from the Lua side. Doing it in Python is easier, hence this tool - though the all updates generator *could* just be a self-editing script that you supply your offset to and run in-game.
+
+**This feature is todo because it's not really worth the work of implementing. If the search breaks, simply find the offset of the function in the new game version and generate a new script. Or, manually search the values in the existing script and remove the ones that no longer work (this may not work, but it often does).**
