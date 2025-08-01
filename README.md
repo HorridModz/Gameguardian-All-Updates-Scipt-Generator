@@ -228,7 +228,7 @@ The `build.py` script will find the paths to your `keystone-engine` and `capston
 The generated exe will be at `dist/PLATFORM/all_updates_generator/all_updates_generator.exe`.
 
 > [!NOTE]
-> You can edit the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
+> If you're editing the code of the tool itself, feel free to modify the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
 
 # TODO: Auto Repair
 
