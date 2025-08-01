@@ -1,0 +1,6 @@
+capstone~=5.0.3
+keystone-engine~=0.9.2
+pyelftools~=0.31
+colorama~=0.4.6
+docopt~=0.6.2
+schema~=0.7.7
