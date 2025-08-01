@@ -1,36 +1,33 @@
-import os
+import sys
 import platform
+import distro
+import os
 from shutil import copyfile, rmtree, make_archive
 import subprocess
 import capstone
 import keystone
 
 
-def get_machine_arch():
-    if os.environ.get('PROCESSOR_ARCHITEW6432'):
-        return 'AMD64'
-    return os.environ.get('PROCESSOR_ARCHITECTURE', platform.machine())
-
-if os.name != "nt":
-    raise Exception("Your platform is not Windows. To build for Windows, please run this script from a Windows device.")
-platform_id = f"Windows-{get_machine_arch()}"
+if sys.platform != "linux" and sys.platform != "linux2":
+    raise Exception("Your platform is not linux. To build for Linux, please run this script from a Linux device.")
+platform_id = f"{distro.id()}-{distro.version()}-{platform.machine()}"
 print(f"Detected platform {platform_id}")
 root_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(os.path.join(root_dir, "../src"))
 
 # Build with pyinstaller
-command = f'pyinstaller Windows/all_updates_generator.py' \
+command = f'pyinstaller Linux/all_updates_generator.py' \
           ' --additional-hooks-dir="../Build Scripts/pyinstaller hooks"' \
           ' --add-data "resources/minified_script_template.lua:resources"' \
           f' --add-data "resources/script_template.lua:resources"' \
           f' --add-binary "{os.path.dirname(keystone.__file__)}:keystone"' \
           f' --add-binary "{os.path.dirname(capstone.__file__)}:capstone"' \
-          ' --distpath "../dist/build-temp" --name "all_updates_generator" -y'
+          ' --onefile --distpath "../dist/build-temp" --name "all_updates_generator" -y'
 print(command)
-subprocess.run(command, check=True)
+subprocess.run(command)
 # Add loggingconfig.py file to build directory
-copyfile("resources/loggingconfig.json", "../dist/build-temp/all_updates_generator/loggingconfig.json")
+copyfile("resources/loggingconfig.json", "../dist/Windows/all_updates_generator/loggingconfig.json")
 # Generate a zip file and delete the folder
-make_archive(f"../dist/Windows/Gameguardian All Updates Script Generator {platform_id}", "zip",
+make_archive(f"../dist/Linux/Gameguardian All Updates Script Generator {platform_id}", "zip",
              "../dist/build-temp/all_updates_generator")
 rmtree("../dist/build-temp")
