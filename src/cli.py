@@ -383,4 +383,4 @@ def main(argv = None):
 
 
 if __name__ == "__main__":
-    main(['all_updates_generator', "--simplified_help"])
+    main()
