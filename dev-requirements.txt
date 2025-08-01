@@ -1,4 +1,6 @@
-pyinstaller
+pyinstaller~=6.14.2 # For Windows and Linux builds
+distro~=1.9.0 # For Linux builds
+Kivy~=2.3.1 # For android build
 capstone~=5.0.3
 keystone-engine~=0.9.2
 pyelftools~=0.31
