@@ -250,7 +250,7 @@ def print_result(message: str) -> None:
 
 def main(argv = None):
     if argv is None:
-        argv = sys.argv
+        argv = sys.argv[1:]
     if len(argv) == 1:
         # No arguments provided - show help
         print(__doc__)
