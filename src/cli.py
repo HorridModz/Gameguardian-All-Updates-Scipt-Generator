@@ -251,6 +251,9 @@ def print_result(message: str) -> None:
 def main(argv = None):
     if argv is None:
         argv = sys.argv[1:]
+    if argv[1] == "all_updates_generator":
+        # Program name should not be included in argv, so let's dump it
+        del argv[1]
     if len(argv) == 1:
         # No arguments provided - show help
         print(__doc__)
