@@ -6,8 +6,8 @@ Usage:
   all_updates_generator -h | --help
   all_updates_generator --simplified_help
   all_updates_generator --version
-  all_updates_generator change_logging_level ([--enable] | [--disable]) ([--verbose] | [--disable_verbose])
-  ([--enable_color] | [--disable_color]) | [--reset]
+  all_updates_generator change_logging_level ([--enable | --disable] [--verbose | --disable_verbose]
+  [--enable_color | --disable_color] | --reset)
   all_updates_generator generate_group_search <lib_file> (<offset> [--numberofbytes <bytes_num>] | --hex <hex>)
   [--architecture <architecture>][--maxvalues <max_values>] [--prefernooffset]
   all_updates_generator generate_script <lib_file> (<offset> [--numberofbytes <bytes_num>] |--hex <hex>)
