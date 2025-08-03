@@ -51,5 +51,5 @@ copyfile("resources/loggingconfig.json", "../dist/build-temp/all_updates_generat
 make_archive(f"../dist/Windows/Gameguardian All Updates Script Generator {platform_id}", "zip",
              "../dist/build-temp/all_updates_generator")
 print("Successfully built app to "
-      f"{os.path.abspath(f'../dist/Linux/Gameguardian All Updates Script Generator {platform_id}')}")
-#rmtree("../dist/build-temp")
+      f"{os.path.abspath(f'../dist/Windows/Gameguardian All Updates Script Generator {platform_id}')}")
+rmtree("../dist/build-temp")
