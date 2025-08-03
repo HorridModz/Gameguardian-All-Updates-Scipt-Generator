@@ -251,13 +251,13 @@ def print_result(message: str) -> None:
 def main(argv = None):
     if argv is None:
         argv = sys.argv[1:]
-    if argv[0] == "all_updates_generator":
-        # Program name should not be included in argv, so let's dump it
-        del argv[0]
     if len(argv) == 0:
         # No arguments provided - show help
         print(__doc__)
         exit()
+    if argv[0] == "all_updates_generator":
+        # Program name should not be included in argv, so let's dump it
+        del argv[0]
 
     # HACK: For some reason docopt doesn't recognize the --simplified_help flag and errors (displaying usage
     #  instructions and exiting) when I try to run it on "all_updates_generator --simplified_help". So, let's check
