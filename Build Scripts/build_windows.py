@@ -11,7 +11,7 @@ try:
     import colorama
     import docopt
     import schema
-except ImportError:
+except (ImportError, FileNotFoundError):
     print("Installing requirements...")
     subprocess.run("pip -r install ../dev-requirements.txt", check=True)
     import capstone
