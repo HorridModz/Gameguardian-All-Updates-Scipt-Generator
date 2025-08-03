@@ -1,10 +1,11 @@
 import os
 import platform
+import sys
 from shutil import copyfile, rmtree, make_archive
 import subprocess
 
 try:
-    subprocess.run("pyinstaller --version", check=True, capture_output=True)
+    subprocess.run("pyinstaller --version", shell=True, check=True, capture_output=True)
     import capstone
     import keystone
     import elftools
@@ -13,7 +14,7 @@ try:
     import schema
 except (ImportError, FileNotFoundError):
     print("Installing requirements...")
-    subprocess.run(f"{sys.executable} -m pip -r install ../dev-requirements.txt", check=True)
+    subprocess.run(f"{sys.executable} -m pip -r install ../dev-requirements.txt", shell=True, check=True)
     import capstone
     import keystone
     import elftools
@@ -44,7 +45,7 @@ command = f'pyinstaller Windows/all_updates_generator.py' \
           f' --add-binary "{os.path.dirname(capstone.__file__)}:capstone"' \
           ' --distpath "../dist/build-temp" --name "all_updates_generator" -y'
 print(command)
-subprocess.run(command, check=True)
+subprocess.run(command, shell=True, check=True)
 # Add loggingconfig.py file to build directory
 copyfile("resources/loggingconfig.json", "../dist/build-temp/all_updates_generator/loggingconfig.json")
 # Generate a zip file
