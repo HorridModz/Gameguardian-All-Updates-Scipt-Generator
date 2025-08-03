@@ -45,7 +45,7 @@ command = f'pyinstaller Linux/all_updates_generator.py' \
 print(command)
 subprocess.run(command, shell=True, check=True)
 # Add loggingconfig.py file to build directory
-copyfile("resources/loggingconfig.json", "../dist/Windows/all_updates_generator/loggingconfig.json")
+copyfile("resources/loggingconfig.json", "../dist/build-temp/all_updates_generator/loggingconfig.json")
 # Generate a zip file
 make_archive(f"../dist/Linux/Gameguardian All Updates Script Generator {platform_id}", "zip",
              "../dist/build-temp/all_updates_generator")
