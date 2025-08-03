@@ -13,7 +13,7 @@ try:
     import schema
 except (ImportError, FileNotFoundError):
     print("Installing requirements...")
-    subprocess.run("pip -r install ../dev-requirements.txt", check=True)
+    subprocess.run(f"{sys.executable} -m pip -r install ../dev-requirements.txt", check=True)
     import capstone
     import keystone
     import elftools
