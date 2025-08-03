@@ -1,6 +1,7 @@
 .dmypy.json
 .idea/*
 venv/*
+src/backend/loggingconfig.json
 all_updates_generator.zip
 all-updates-generator-Windows.zip
 all-updates-generator-Linux.zip

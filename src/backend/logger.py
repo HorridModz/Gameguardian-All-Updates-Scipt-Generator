@@ -143,14 +143,14 @@ class Logging:
             else:
                 print(f"[{level.name}]: {message}")
 
-    def warning(self, message: str, warningtype: BaseException = None) -> None:
+    def warning(self, message: str, warningtype: BaseException = None, override: bool = False) -> None:
         if warningtype:
             self.Log.append(f"[Warning]: {warningtype}: {message}")
-            if self.printwarnings and _enabled and self.enabled:
+            if override or self.printwarnings and _enabled and self.enabled:
                 self.printmessage(f"{warningtype}: {message}", LoggingLevel.Warning, False, self.colorized)
         else:
             self.Log.append(f"[Warning]: {message}")
-            if self.printwarnings and _enabled and self.enabled:
+            if override or self.printwarnings and _enabled and self.enabled:
                 self.printmessage(message, LoggingLevel.Warning, False, self.colorized)
 
 
@@ -215,10 +215,10 @@ _enabled = True
 _Log = []
 logging = Logging(usedefaults=True)
 
-if __name__ == "__main__":
-    if not os.path.exists(configpath):
-        try:
-            writeconfig(_defaults)
-            print(f"Created loggingconfig.json at {configpath}")
-        except Exception as e:
-            print(f"Failed to create loggingconfig.json at {configpath}: {e}")
+#if __name__ == "__main__":
+#    if not os.path.exists(configpath):
+#        try:
+#            writeconfig(_defaults)
+#            print(f"Created loggingconfig.json at {configpath}")
+#        except Exception as e:
+#            print(f"Failed to create loggingconfig.json at {configpath}: {e}")

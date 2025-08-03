@@ -23,6 +23,8 @@ For other platforms, you can download the [Source Code](https://github.com/Horri
 pip install -r requirements.txt
 ```
 
+Alternatively, you can build a binary yourself - see [Building](#building).
+
 > [!NOTE]
 > While everything in this tool should be cross-platform, it has only been tested on Windows. Support for other platforms is not guaranteed.
 
@@ -211,24 +213,29 @@ These changes are permanent. If you would like to change logging level for a sin
 
 # Building
 
-Install required modules with pip:
+> [!NOTE]
+> If you're editing the code of the tool itself, feel free to modify the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
+
+To build, install required modules with pip...
 
 ```sh
 pip install -r dev-requirements.txt
 ```
 
-And run pyinstaller via your platform's `build.py` script (*do not run pyinstaller manually - some things have to be manually linked in*). The scripts for each platform are in `Build Scripts`, named `build_X.py`:
+... Then run your platform's `build.py` script. The scripts for each platform are in `Build Scripts`, named `build_X.py`:
 
 ```sh
 py "../Build Scripts Windows/build_windows.py"
 ```
 
+You must be on Windows to run `build_windows.py`, and you must be on Linux to run `build_linux.py`. However, `build_android.py` can be run on either platform (it is only tested on Windows, however).
+
 The `build.py` script will find the paths to your `keystone-engine` and `capstone` modules and manually link them into the built exe. Note that semicolons in these paths may break things - I haven't tested it.
 
-The generated exe will be at `dist/PLATFORM/all_updates_generator/all_updates_generator.exe`.
+The generated binary will be at `dist/PLATFORM/all_updates_generator/all_updates_generator.exe`.
 
-> [!NOTE]
-> If you're editing the code of the tool itself, feel free to modify the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
+> [!IMPORTANT]
+> The generated binary will be named and generated for your specific platform - for example, ` "Gameguardian All Updates Script Generator Windows-AMD64` or `Gameguardian All Updates Script Generator ubuntu-22.04-x64_64`). This does not mean that your binary will only work for that exact platform (it may work on other architectures or other Linux distros), but it is not guaranteed to work elsewhere. Note that the Windows AMD64 build should work on practically all Windows platforms; however, Linux compatibility is much more fragile.
 
 # TODO: Auto Repair
 
