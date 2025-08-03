@@ -1,7 +1,7 @@
 import os
 import platform
 import sys
-from shutil import copyfile, rmtree, make_archive
+from shutil import copytree, copyfile, rmtree, make_archive
 import subprocess
 
 try:
@@ -48,7 +48,9 @@ print(command)
 subprocess.run(command, shell=True, check=True)
 # Add loggingconfig.py file to build directory
 copyfile("resources/loggingconfig.json", "../dist/build-temp/all_updates_generator/loggingconfig.json")
-# Generate a zip file
+# Copy folder to final destination and generate a zip file
+copytree("../dist/build-temp/all_updates_generator",
+         f"../dist/Windows/Gameguardian All Updates Script Generator {platform_id}", dirs_exist_ok=True)
 make_archive(f"../dist/Windows/Gameguardian All Updates Script Generator {platform_id}", "zip",
              "../dist/build-temp/all_updates_generator")
 print("Successfully built app to "
