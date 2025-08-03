@@ -208,7 +208,6 @@ _defaults = loggingconfig(colorized=True,
                           printall=True,
                           printnone=False
                           )
-print(os.path.join(os.path.dirname(sys.modules['__main__'].__file__), "loggingconfig.json"))
 configpath = os.path.join(os.path.dirname(sys.modules['__main__'].__file__), "loggingconfig.json")
 just_fix_windows_console()
 _enabled = True
