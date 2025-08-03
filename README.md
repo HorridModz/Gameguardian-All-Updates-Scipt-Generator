@@ -16,17 +16,14 @@ If you would like to jump ahead to instructions for using your generated script 
 
 ### Installation
 
-This tool is available as a CLI application. For Windows users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal.
+This tool is available as a CLI application. For Windows and Linux users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal. The Windows release should work on almost all Windows machines, but the Linux one was built with debian and may or may not be cross-compatible. **Android apk is coming soon.**
 
-For other platforms, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/tag/V1.0), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
+If your platform is not supported, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/tag/V1.0), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
 ```sh
 pip install -r requirements.txt
 ```
 
-Alternatively, you can build a binary yourself - see [Building](#building).
-
-> [!NOTE]
-> While everything in this tool should be cross-platform, it has only been tested on Windows. Support for other platforms is not guaranteed.
+Alternatively, you can build a binary yourself (it's easy!) - see [Building](#building).
 
 ### Commands
 
@@ -216,13 +213,15 @@ These changes are permanent. If you would like to change logging level for a sin
 > [!NOTE]
 > If you're editing the code of the tool itself, feel free to modify the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
 
-To build, install required modules with pip...
+To build, first make sure that you have [Python 3](https://www.python.org/downloads/) installed.
+
+Then install required modules with pip:
 
 ```sh
 pip install -r dev-requirements.txt
 ```
 
-... Then run your platform's `build.py` script. The scripts for each platform are in `Build Scripts`, named `build_X.py`:
+And finally, run your platform's `build.py` script. The scripts for each platform are in `Build Scripts`, named `build_X.py`:
 
 ```sh
 py "../Build Scripts Windows/build_windows.py"
@@ -232,7 +231,7 @@ You must be on Windows to run `build_windows.py`, and you must be on Linux to ru
 
 The `build.py` script will find the paths to your `keystone-engine` and `capstone` modules and manually link them into the built exe. Note that semicolons in these paths may break things - I haven't tested it.
 
-The generated binary will be at `dist/PLATFORM/all_updates_generator/all_updates_generator.exe`.
+The generated binary will be at `dist/OS_TYPE/PLATFORM/all_updates_generator/all_updates_generator.exe`.
 
 > [!IMPORTANT]
 > The generated binary will be named and generated for your specific platform - for example, ` "Gameguardian All Updates Script Generator Windows-AMD64` or `Gameguardian All Updates Script Generator ubuntu-22.04-x64_64`). This does not mean that your binary will only work for that exact platform (it may work on other architectures or other Linux distros), but it is not guaranteed to work elsewhere. Note that the Windows AMD64 build should work on practically all Windows platforms; however, Linux compatibility is much more fragile.
