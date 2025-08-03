@@ -41,7 +41,7 @@ command = f'pyinstaller Linux/all_updates_generator.py' \
           f' --add-data "resources/script_template.lua:resources"' \
           f' --add-binary "{os.path.dirname(keystone.__file__)}:keystone"' \
           f' --add-binary "{os.path.dirname(capstone.__file__)}:capstone"' \
-          ' --onefile --distpath "../dist/build-temp" --name "all_updates_generator" -y'
+          ' --onefile --distpath "../dist/build-temp/all_updates_generator" --name "all_updates_generator" -y'
 print(command)
 subprocess.run(command, shell=True, check=True)
 # Add loggingconfig.py file to build directory
