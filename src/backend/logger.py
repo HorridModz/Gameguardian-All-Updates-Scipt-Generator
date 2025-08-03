@@ -193,6 +193,15 @@ def loggingconfig(**kwargs) -> dict:
     """
     return kwargs
 
+def get_config_path() -> str:
+    """Gets the file path for the logging.config file"""
+    if hasattr(sys, '_MEIPASS'):
+        # PyInstaller
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.dirname(os.path.dirname(__file__))
+    return os.path.join(base_path, "loggingconfig.json")
+
 
 # noinspection IncorrectFormatting
 _defaults = loggingconfig(colorized=True,
@@ -208,7 +217,7 @@ _defaults = loggingconfig(colorized=True,
                           printall=True,
                           printnone=False
                           )
-configpath = os.path.join(os.path.dirname(sys.modules['__main__'].__file__), "loggingconfig.json")
+configpath = get_config_path()
 just_fix_windows_console()
 _enabled = True
 
