@@ -1,11 +1,28 @@
 import sys
 import platform
-import distro
 import os
 from shutil import copyfile, rmtree, make_archive
 import subprocess
-import capstone
-import keystone
+
+try:
+    subprocess.run("pyinstaller --version", check=True, capture_output=True)
+    import capstone
+    import keystone
+    import elftools
+    import colorama
+    import docopt
+    import schema
+    import distro
+except ImportError:
+    print("Installing requirements...")
+    subprocess.run("pip -r install ../dev-requirements.txt", check=True)
+    import capstone
+    import keystone
+    import elftools
+    import colorama
+    import docopt
+    import schema
+    import distro
 
 
 if sys.platform != "linux" and sys.platform != "linux2":

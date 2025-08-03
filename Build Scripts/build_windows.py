@@ -2,9 +2,24 @@ import os
 import platform
 from shutil import copyfile, rmtree, make_archive
 import subprocess
-import capstone
-import keystone
 
+try:
+    subprocess.run("pyinstaller --version", check=True, capture_output=True)
+    import capstone
+    import keystone
+    import elftools
+    import colorama
+    import docopt
+    import schema
+except ImportError:
+    print("Installing requirements...")
+    subprocess.run("pip -r install ../dev-requirements.txt", check=True)
+    import capstone
+    import keystone
+    import elftools
+    import colorama
+    import docopt
+    import schema
 
 def get_machine_arch():
     if os.environ.get('PROCESSOR_ARCHITEW6432'):
