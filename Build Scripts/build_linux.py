@@ -51,4 +51,4 @@ make_archive(f"../dist/Linux/Gameguardian All Updates Script Generator {platform
              "../dist/build-temp/all_updates_generator")
 print("Successfully built app to "
       f"{os.path.abspath(f'../dist/Linux/Gameguardian All Updates Script Generator {platform_id}')}")
-#rmtree("../dist/build-temp")
+rmtree("../dist/build-temp")
