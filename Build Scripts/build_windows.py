@@ -19,7 +19,7 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(os.path.join(root_dir, "../src"))
 
 # Build with pyinstaller
-if not os.exists("../dist/build-temp"):
+if not os.path.exists("../dist/build-temp"):
     os.makedirs("../dist/build-temp")
 command = f'pyinstaller Windows/all_updates_generator.py' \
           ' --additional-hooks-dir="../Build Scripts/pyinstaller hooks"' \
