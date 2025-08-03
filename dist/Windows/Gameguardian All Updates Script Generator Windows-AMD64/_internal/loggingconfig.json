@@ -2,13 +2,13 @@
     "colorized": true,
     "printwarnings": true,
     "printdebug": true,
-    "printinfo": false,
+    "printinfo": true,
     "printimportant": true,
     "printsuperimportant": true,
     "printspecial": true,
     "donotprintspecial": false,
-    "donotprintsuccessinfo": false,
+    "donotprintsuccessinfo": true,
     "allowoverride": true,
-    "printall": false,
+    "printall": true,
     "printnone": false
 }
