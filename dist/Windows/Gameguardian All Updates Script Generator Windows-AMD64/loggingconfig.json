@@ -1,0 +1,14 @@
+{
+    "colorized": true,
+    "printwarnings": true,
+    "printdebug": false,
+    "printinfo": false,
+    "printimportant": false,
+    "printsuperimportant": true,
+    "printspecial": true,
+    "donotprintspecial": false,
+    "donotprintsuccessinfo": false,
+    "allowoverride": true,
+    "printall": false,
+    "printnone": false
+}
