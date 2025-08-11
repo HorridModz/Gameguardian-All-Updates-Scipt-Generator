@@ -153,6 +153,17 @@ class Logging:
             if override or self.printwarnings and _enabled and self.enabled:
                 self.printmessage(message, LoggingLevel.Warning, False, self.colorized)
 
+    def reload(self, usedefaults: bool = True, **kwargs):
+        """
+        Re-initialize the log with new settings, while keeping the log record (if loggingconfig.json was updated or the
+        program wants to change settings at runtime using kwargs)
+        """
+        if usedefaults:
+            self._fromoptions(**loadconfig())
+        else:
+            self._fromoptions(**kwargs)
+        self.enabled = False if self.printnone else True
+
 
 def disable_logging() -> None:
     """
@@ -201,7 +212,6 @@ def get_config_path() -> str:
     else:
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, "loggingconfig.json")
-
 
 # noinspection IncorrectFormatting
 _defaults = loggingconfig(colorized=True,
