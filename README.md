@@ -18,7 +18,7 @@ If you would like to jump ahead to instructions for using your generated script 
 
 This tool is available as a CLI application. For Windows and Linux users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal. The Windows release should work on almost all Windows machines, but the Linux one was built with debian and may or may not be cross-compatible. **Android apk is coming soon.**
 
-If your platform is not supported, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/tag/V1.0), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
+If your platform is not supported, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
 ```sh
 pip install -r requirements.txt
 ```
