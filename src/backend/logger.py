@@ -213,6 +213,7 @@ def get_config_path() -> str:
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, "loggingconfig.json")
 
+
 # noinspection IncorrectFormatting
 _defaults = loggingconfig(colorized=True,
                           printwarnings=True,
