@@ -3,7 +3,7 @@
     "printwarnings": true,
     "printdebug": false,
     "printinfo": false,
-    "printimportant": false,
+    "printimportant": true,
     "printsuperimportant": true,
     "printspecial": true,
     "donotprintspecial": false,
