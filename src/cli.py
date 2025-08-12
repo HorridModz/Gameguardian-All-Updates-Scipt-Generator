@@ -1,5 +1,3 @@
-__version__ = "Gameguardian All Updates Script Generator V1.2"
-
 """Gameguardian All Updates Script Generator by HorridModz
 Generates gameguardian scripts that work on all updates of a game using pattern scanning
 https://github.com/HorridModz/Gameguardian-All-Updates-Script-Generator
@@ -220,8 +218,11 @@ To configure logging, run "all_updates_generator change_logging_level", with the
         all_updates_generator change_logging_level --reset
 """
 
+__version__ = "1.2"
+VERSION = f"Gameguardian All Updates Script Generator V{__version__}"
 
-__all__ = ["main", "__version__"]
+
+__all__ = ["main", "VERSION"]
 
 # Add src to system path for relative imports
 import sys
@@ -267,7 +268,7 @@ def main(argv = None):
     if "--simplified_help" in argv:
         print(SIMPLIFIED_HELP_MESSAGE)
         exit()
-    args = docopt(__doc__, argv, help=True, version=__version__)
+    args = docopt(__doc__, argv, help=True, version=VERSION)
 
     # noinspection PyTypeChecker,IncorrectFormatting,PyShadowingNames
     schema = Schema({Optional("<lib_file>"): And(And(os.path.exists, error=f"File {args['<lib_file>']} not found"),
