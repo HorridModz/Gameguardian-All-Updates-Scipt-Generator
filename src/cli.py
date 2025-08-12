@@ -1,3 +1,5 @@
+VERSION = "Gameguardian All Updates Script Generator V1.2"
+
 """Gameguardian All Updates Script Generator by HorridModz
 Generates gameguardian scripts that work on all updates of a game using pattern scanning
 https://github.com/HorridModz/Gameguardian-All-Updates-Script-Generator
@@ -219,7 +221,7 @@ To configure logging, run "all_updates_generator change_logging_level", with the
 """
 
 
-__all__ = ["main"]
+__all__ = ["main", "VERSION"]
 
 # Add src to system path for relative imports
 import sys
@@ -265,7 +267,7 @@ def main(argv = None):
     if "--simplified_help" in argv:
         print(SIMPLIFIED_HELP_MESSAGE)
         exit()
-    args = docopt(__doc__, argv, help=True, version="Gameguardian All Updates Script Generator V1.0")
+    args = docopt(__doc__, argv, help=True, version=VERSION)
 
     # noinspection PyTypeChecker,IncorrectFormatting,PyShadowingNames
     schema = Schema({Optional("<lib_file>"): And(And(os.path.exists, error=f"File {args['<lib_file>']} not found"),
@@ -329,6 +331,9 @@ def main(argv = None):
             config["colorized"] = True
         logger.writeconfig(config)
         print_result("Successfully changed logging level. This will persist until you change it back.")
+        # If we are in Android app, we need to hot-reload the logger so we don't have to restart app to use updated
+        # settings
+        logging.reload()
         sys.exit()
 
     if not logging.enabled:
