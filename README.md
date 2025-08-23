@@ -224,7 +224,7 @@ pip install -r dev-requirements.txt
 And finally, run your platform's `build.py` script. The scripts for each platform are in `Build Scripts`, named `build_X.py`:
 
 ```sh
-py "../Build Scripts Windows/build_windows.py"
+py "../Build Scripts/build_windows.py"
 ```
 
 You must be on Windows to run `build_windows.py`, and you must be on Linux to run `build_linux.py`. However, `build_android.py` can be run on either platform (it is only tested on Windows, however).
