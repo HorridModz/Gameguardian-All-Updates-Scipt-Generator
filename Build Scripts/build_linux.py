@@ -13,7 +13,7 @@ try:
     import docopt
     import schema
     import distro
-except (ImportError, FileNotFoundError):
+except (ImportError, FileNotFoundError, subprocess.CalledProcessError):
     print("Installing requirements...")
     subprocess.run(f"{sys.executable} -m pip -r install ../dev-requirements.txt", shell=True, check=True)
     import capstone
