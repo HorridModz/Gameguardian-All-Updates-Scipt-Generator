@@ -130,14 +130,12 @@ class CLIWrapper(BoxLayout):
         if self.input.text.strip() == "":
             return
         self.running = True
-
-        args = shlex.split(self.input.text.strip())
-
         captured_output = io.StringIO()
         sys_stdout = sys.stdout
         sys.stdout = captured_output
 
         try:
+            args = shlex.split(self.input.text.strip())
             main(args)
         except DocoptExit as e:
             print(e)
