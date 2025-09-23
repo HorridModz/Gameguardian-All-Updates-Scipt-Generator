@@ -184,7 +184,7 @@ def hextoarm(hexstr: str, architecture: str) -> list[str]:
         try:
             disasm = next(cs.disasm_lite(bytearray.fromhex(hexinstruction), 0x0))
             convertedinstructions.append(" ".join(disasm[2:]))
-        except Exception:
+        except (Exception, StopIteration):
             raise ArmHexError(f"Failed to disassemble hex instruction: {hexinstruction} with {architecture}"
                               f" architecture. Check that the hex instruction comes from the right lib file at the "
                               f"right offset, and the architecture is correct.") from None
