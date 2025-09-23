@@ -16,7 +16,16 @@ def get_script_path(minified: bool) -> str:
         # PyInstaller
         base_path = sys._MEIPASS
     else:
-        base_path = os.path.dirname(os.path.dirname(__file__))
+        try:
+            from kivy.utils import platform
+            if platform == "android":
+                # Android APK (buildozer)
+                base_path = ""
+            else:
+                base_path = os.path.dirname(os.path.dirname(__file__))
+        except ModuleNotFoundError:
+            # Kivy may not be installed - in this case, we know it's not Android
+            base_path = os.path.dirname(os.path.dirname(__file__))
     if minified:
         return os.path.join(base_path, "resources/minified_script_template.lua")
     else:

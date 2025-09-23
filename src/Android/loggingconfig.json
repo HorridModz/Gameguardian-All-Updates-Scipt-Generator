@@ -1,7 +1,7 @@
 {
     "colorized": true,
     "printwarnings": true,
-    "printdebug": true,
+    "printdebug": false,
     "printinfo": false,
     "printimportant": true,
     "printsuperimportant": true,

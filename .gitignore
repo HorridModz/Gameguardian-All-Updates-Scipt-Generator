@@ -8,3 +8,4 @@ all-updates-generator-Linux.zip
 all-updates-generator-Android.zip
 all_updates_generator.spec
 **/build/*
+/src/Android/.buildozer/

@@ -16,7 +16,7 @@ If you would like to jump ahead to instructions for using your generated script 
 
 ### Installation
 
-This tool is available as a CLI application. For Windows and Linux users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal. The Windows release should work on almost all Windows machines, but the Linux one was built with debian and may or may not be cross-compatible. **Android apk is coming soon.**
+This tool is available as a CLI application. For Windows and Linux users, you can download the [latest release](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest/download/all_updates_generator.zip) and run `all_updates_generator.exe` in your terminal. The Windows release should work on almost all Windows machines, but the Linux one was built with debian and may or may not be cross-compatible.
 
 If your platform is not supported, you can download the [Source Code](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/releases/latest), extract it, and run the file `src\cli\cli.py` in your terminal. Make sure that you have [Python 3](https://www.python.org/downloads/) installed, and you must install the [requirements](https://github.com/HorridModz/Gameguardian-All-Updates-Scipt-Generator/blob/main/requirements.txt) via:
 ```sh
@@ -24,6 +24,9 @@ pip install -r requirements.txt
 ```
 
 Alternatively, you can build a binary yourself (it's easy!) - see [Building](#building).
+
+> [!NOTE]
+> For accessibility and ease of use, the Android build is not a CLI. It is shipped as an APK with a minimalistic command line-like CLI; it works the same as the CLI version does except despite technically being a GUI application.
 
 ### Commands
 
@@ -206,12 +209,14 @@ You can use the command `change_logging_level` to customize the tool's logs:
 These changes are permanent. If you would like to change logging level for a single run of the tool (such as enabling verbose mode), make the change with `change_logging_level`, then set it back afterward.
 
 > [!NOTE]
-> Logging configuration is stored in a config file (`loggingconfig.json`). If you move the .exe file to a new location, make sure to also copy this config file so you do not lose your logging preferences.
+> Logging configuration is stored in a config file (`loggingconfig.json`). If you move the .exe file to a new location, make sure to also copy this config file so you do not lose your logging preferences. In the Android APK, you do not have to worry about this.
 
 # Building
 
 > [!NOTE]
 > If you're editing the code of the tool itself, feel free to modify the generated script template; it is at `src/resources/script_template.lua`. However, make sure to minify the edited template (use https://www.minifier.org/lua-minifier) and paste that into `minified_script_template.lua` so both the minified and un-minified versions reflect your changes.
+
+Builds are generated via **[pyinstaller](https://pyinstaller.org/en/stable/)** on Windows and Linux. The Android build uses **[Buildozer](https://buildozer.readthedocs.io/en/latest/]**.
 
 To build, first make sure that you have [Python 3](https://www.python.org/downloads/) installed.
 
@@ -227,14 +232,15 @@ And finally, run your platform's `build.py` script. The scripts for each platfor
 py "../Build Scripts/build_windows.py"
 ```
 
-You must be on Windows to run `build_windows.py`, and you must be on Linux to run `build_linux.py`. However, `build_android.py` can be run on either platform (it is only tested on Windows, however).
-
-The `build.py` script will find the paths to your `keystone-engine` and `capstone` modules and manually link them into the built exe. Note that semicolons in these paths may break things - I haven't tested it.
+You must be on Windows to run `build_windows.py`, and you must be on Linux to run `build_linux.py`. However, `build_android.py` can be run on either platform (it is only tested on Windows, however). It will use WSL on Windows, so this must be installed.
 
 The generated binary will be at `dist/OS_TYPE/PLATFORM/all_updates_generator/all_updates_generator.exe`.
 
 > [!IMPORTANT]
-> The generated binary will be named and generated for your specific platform - for example, ` "Gameguardian All Updates Script Generator Windows-AMD64` or `Gameguardian All Updates Script Generator ubuntu-22.04-x64_64`). This does not mean that your binary will only work for that exact platform (it may work on other architectures or other Linux distros), but it is not guaranteed to work elsewhere. Note that the Windows AMD64 build should work on practically all Windows platforms; however, Linux compatibility is much more fragile.
+> The generated binary will be named and generated for your specific platform - for example, ` "Gameguardian All Updates Script Generator Windows-AMD64` or `Gameguardian All Updates Script Generator ubuntu-22.04-x64_64`). This does not mean that your binary will only work for that exact platform (it may work on other architectures or other Linux distros), but it is not guaranteed to work elsewhere. Note that the Windows AMD64 build should work on practically all Windows devices; however, Linux compatibility is much more fragile.
+
+> [!NOTE]
+> **Buildozer** (the tool used for Android builds) supports both release and debug builds. You can build the release version with `build_android.py`; the debug version can be built with `build_android_debug.py`.
 
 # TODO: Auto Repair
 

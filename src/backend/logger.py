@@ -210,7 +210,16 @@ def get_config_path() -> str:
         # PyInstaller
         base_path = os.path.dirname(sys.executable)
     else:
-        base_path = os.path.dirname(os.path.dirname(__file__))
+        try:
+            from kivy.utils import platform
+            if platform == "android":
+                # Android APK (buildozer)
+                base_path = ""
+            else:
+                base_path = os.path.dirname(os.path.dirname(__file__))
+        except ModuleNotFoundError:
+            # Kivy may not be installed - in this case, we know it's not Android
+            base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, "loggingconfig.json")
 
 
