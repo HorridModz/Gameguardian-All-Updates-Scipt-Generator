@@ -26,16 +26,19 @@ make sure to hook each of these offsets.
 WARNING: Generated script templates **will** overwrite each other. If you want to use multiple of these templates in one
 script, make sure that your script does what it needs to do with one function before you paste in the code for another,
 or else the second function will overwrite the first's.
-
 --]]
 
+--[[
+    TODO: Verify if target architecture is correct. We currently have it stored, but don't enforce it and the script
+    will fail without warning.
+]]--
 
 GROUP_SEARCH = "$GROUP_SEARCH$"
 SINGLE_VALUE = "$SINGLE_VALUE$"
 SINGLE_VALUE_TYPE = "$DATA_TYPE$"
 OFFSET_FROM_START = "$OFFSET_FROM_START$" -- decimal value (can be 0)
 LIB_NAME = "$LIB_NAME$"
-ARCHITECTURE = "$ARCHITECTURE$" -- "32bit" or "64bit"
+ARCHITECTURE = "$ARCHITECTURE$" -- "32bit", "64bit", "x86", or "x86_64"
 MAX_RESULTS = "$MAX_RESULTS$" -- Set to -1 to permit any number of results
 SHOW_CHOICE_IF_TOO_MANY_RESULTS = "$SHOW_CHOICE_IF_TOO_MANY_RESULTS$" -- "true" or "false"
 -- Auto Repair is not yet implemented! It should always be "false"
@@ -72,8 +75,9 @@ function _validate_inputs()
             _error("SINGLE_VALUE_TYPE must be 'qword', 'dword', 'word', or 'byte'")
         end
     end
-    if ARCHITECTURE ~= "32bit" and ARCHITECTURE ~= "64bit" then
-        _error("Invalid valid for ARCHITECTURE - " .. ARCHITECTURE .. " (must be \"32bit\" or \"64bit\").")
+    if ARCHITECTURE ~= "32bit" and ARCHITECTURE ~= "64bit" and ARCHITECTURE ~= "x86" and ARCHITECTURE ~= "x86_64" then
+        _error("Invalid valid for ARCHITECTURE - " .. ARCHITECTURE .. " (must be \"32bit\", \"64bit\", ."
+                .. " \"x86\", or \"x86_64\").")
     end
     if tonumber(OFFSET_FROM_START) == nil or tonumber(OFFSET_FROM_START) ~= math.floor(OFFSET_FROM_START) then
         _error("OFFSET_FROM_START must be a valid integer (not " .. OFFSET_FROM_START .. ").")

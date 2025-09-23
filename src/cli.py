@@ -55,8 +55,8 @@ Options:
                                 name of the lib file.
 
     --architecture <string>     Commands: generate_group_search, generate_script
-                                "32bit" or "64bit" | Default: Auto-detect
-                                Force the program to use 32bit or 64bit architecture. This is not recommended,
+                                "32bit", "64bit", x86, or x86_64 | Default: Auto-detect
+                                Force the program to use a certain architecture. This is not recommended,
                                 as it should automatically detect the architecture from the lib file.
 
 
@@ -142,7 +142,7 @@ To generate a script, run "all_updates_generator generate_script", and add the f
         - -- hex HEX - hex value obtained from your lib by copying the bytes starting from the function's offset
                        (e.g. F6 CB 10 A9)
     - OPTIONAL: --architecture <string> - the architecture of the game you are modding (should match your lib 
-                                              file's architecture), either "32bit" or "64bit".
+                                              file's architecture), either "32bit", "64bit", "x86", or "x86_64".
                                               Leave this out to auto-detect architecture from lib file (recommended)
     - The output path for the generated script - put this in quotes
     - OPTIONAL: --lib_name <string> - The name of your game's lib (should match the name of the lib file, unless the 
@@ -184,7 +184,7 @@ following arguments:
         - --hex HEX - hex value obtained from your lib by copying a sequence of bytes starting from the function's 
                       offset (e.g. F6 CB 10 A9)
     - OPTIONAL: --architecture ARCHITECTURE - the architecture of the game you are modding (should match your lib 
-                                              file's architecture), either "32bit" or "64bit".
+                                              file's architecture), either "32bit", "64bit", "x86", or "x86_64".
                                               Leave this out to auto-detect architecture from lib file (recommended)
     - OPTIONAL: --maxvalues MAXVALUES (ADVANCED) - Goal for how many values to put in the generated group search, 
                                                    if this many can be found. Default 8.
@@ -218,7 +218,7 @@ To configure logging, run "all_updates_generator change_logging_level", with the
         all_updates_generator change_logging_level --reset
 """
 
-__version__ = "1.2"
+__version__ = "1.3"
 VERSION = f"Gameguardian All Updates Script Generator V{__version__}"
 
 
@@ -281,8 +281,9 @@ def main(argv = None):
                                                 And(lambda offset: -(1 << 63) <= int(offset, 16) < (1 << 63),
                                                     error="offset is not a valid file offset (out of range)")),
                      Optional("--architecture"): And(Use(lambda architecture: architecture.strip().lower()),
-                                                     lambda architecture: architecture in ("32bit", "64bit"),
-                                                     error="architecture must be '32bit' or '64bit'"),
+                                                     lambda architecture: architecture in ("32bit", "64bit", "x86",
+                                                                                           "x86_64"),
+                                                     error="architecture must be '32bit', '64bit', 'x86', or 'x86_64'"),
                      Optional("--numberofbytes", default=600): And(Use(int, error="numberofbytes must be an integer"),
                                                                    lambda bytes_num: bytes_num > 0,
                                                                    error="numberofbytes must be a positive integer"),

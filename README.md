@@ -87,7 +87,7 @@ all_updates_generator generate_script "C:\Desktop\libil2cpp.so"
 
 *These arguments apply to both `generate_group_search` and `generate_script`:
 
-- `architecture <string>`: Force the program to use 32bit or 64bit architecture (put `32bit` or `64bit`). This is not recommended, as it should automatically detect the architecture from the lib file.
+- `architecture <string>`: Force the program to use a certain architecture (`32bit`, `64bit`, `x86`, or `x86_64`). This is not recommended, as it should automatically detect the architecture from the lib file.
 - `numberofbytes <number>`: How many bytes to read when getting hex from lib file and offset (not applicable when hex is supplied instead) - default is 1000. The more bytes that are read
   past the end of the function (e.g. if numberofbytes is 1000 and the function is 300 bytes), the more dependent the aob will be on adjacent functions (usually methods of the same class or namespace) rather than just the function itself, and the more likely the search is to break when these functions are changed or reordered. Thus, the higher this value is, the more precise the group search may be - but also, the higher the chance of the group search breaking.
 - `maxvalues <number>`: Goal for how many values to put in generated group search, if this many can be found (**default 8**). Increasing this number will make the group search more precise and decrease the odds of getting multiple results, but in turn it will be slower. It is not recommended to change this unless you have a good reason - however, if you are getting too many results and need to decrease the number, increasing this value is the recommended way. The maximum is 64 due to gameguardian's limitations,  though you should never realistically need this many.
@@ -224,7 +224,7 @@ pip install -r dev-requirements.txt
 And finally, run your platform's `build.py` script. The scripts for each platform are in `Build Scripts`, named `build_X.py`:
 
 ```sh
-py "../Build Scripts/build_windows.py"
+py "Build Scripts/build_windows.py"
 ```
 
 You must be on Windows to run `build_windows.py`, and you must be on Linux to run `build_linux.py`. However, `build_android.py` can be run on either platform (it is only tested on Windows, however).

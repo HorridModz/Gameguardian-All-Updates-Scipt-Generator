@@ -14,6 +14,7 @@ import binascii
 from elftools.elf.elffile import ELFFile
 import keystone  # keystone-engine
 import capstone
+# noinspection PyUnresolvedReferences
 from backend.logger import logging, LoggingLevel
 
 if not hasattr(keystone, "Ks"):
@@ -112,42 +113,48 @@ def detect_architecture(libfilepath: str) -> str:
             elffile = ELFFile(f)
     except Exception:
         raise LibDetectionError("Failed to determine architecture of lib file (error occurred with pyelftools). Is it"
-                                " a valid ARM or ARM64 .so file?")
+                                " a valid ARM, ARM64, x86, or x86_64 .so file?")
     architecture = elffile.get_machine_arch()
-    architecture_conversion = {"ARM": "32bit", "AArch64": "64bit"}
+    architecture_conversion = {"ARM": "32bit", "AArch64": "64bit", "x64": "x86_64", "x86": "x86"}
     if architecture in architecture_conversion:
         logging.log(f"Detected architecture of lib file: {architecture_conversion[architecture]}",
                     level=LoggingLevel.Important, successinfo=True)
         return architecture_conversion[architecture]
     else:
         raise LibDetectionError(f"Invalid lib file: This file is of {architecture} architecture"
-                                " (according to pyelftools), but it must be ARM or ARM64")
+                                " (according to pyelftools), but it must be ARM, ARM64, x86, or x86_64.")
 
 
 @cache
 def make_ks(architecture: str) -> keystone.Ks:
-    """
-    Only do this once, because it is expensive.
-    """
     if architecture == "32bit":
         return keystone.Ks(keystone.KS_ARCH_ARM, keystone.KS_MODE_ARM)
     elif architecture == "64bit":
         return keystone.Ks(keystone.KS_ARCH_ARM64, keystone.KS_MODE_LITTLE_ENDIAN)
+    elif architecture == "x86":
+        return keystone.Ks(keystone.KS_ARCH_X86, keystone.KS_MODE_32)
+    elif architecture == "x86_64":
+        return keystone.Ks(keystone.KS_ARCH_X86, keystone.KS_MODE_64)
     else:
-        raise ValueError(f"Unrecognized architecture: {architecture}. Only '32bit' and '64bit' are valid strings")
+        raise ValueError(f"Unrecognized architecture: {architecture}. Only '32bit', '64bit', 'x86', and 'x86_64' are "
+                         f"valid strings")
 
 
 @cache
 def make_cs(architecture: str) -> capstone.Cs:
-    """
-    Only do this once, because it is expensive.
-    """
     if architecture == "32bit":
-        return capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_ARM)
+        cs = capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_ARM)
     elif architecture == "64bit":
-        return capstone.Cs(capstone.CS_ARCH_ARM64, capstone.CS_MODE_LITTLE_ENDIAN)
+        cs = capstone.Cs(capstone.CS_ARCH_ARM64, capstone.CS_MODE_LITTLE_ENDIAN)
+    elif architecture == "x86":
+        cs = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+    elif architecture == "x86_64":
+        cs = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_64)
     else:
-        raise ValueError(f"Unrecognized architecture: {architecture}. Only '32bit' and '64bit' are valid strings")
+        raise ValueError(f"Unrecognized architecture: {architecture}. Only '32bit', '64bit', 'x86', and 'x86_64' are "
+                         f"valid strings")
+    cs.detail = True
+    return cs
 
 
 @cache
@@ -176,23 +183,41 @@ def armtohex(armcode: str, architecture: str, sep: str = " ", upper: bool = True
 
 @cache
 def hextoarm(hexstr: str, architecture: str) -> list[str]:
+    if hexstr == "" or hexstr.isspace():
+        return []
     cs = make_cs(architecture)
     convertedinstructions = []
-    # Convert hex string to list of hex instructions
-    hexinstructions = wraptext(remove_whitespace(hexstr), 8)
-    for hexinstruction in hexinstructions:
-        try:
-            disasm = next(cs.disasm_lite(bytearray.fromhex(hexinstruction), 0x0))
-            convertedinstructions.append(" ".join(disasm[2:]))
-        except (Exception, StopIteration):
-            raise ArmHexError(f"Failed to disassemble hex instruction: {hexinstruction} with {architecture}"
-                              f" architecture. Check that the hex instruction comes from the right lib file at the "
-                              f"right offset, and the architecture is correct.") from None
+    for insn in cs.disasm(bytearray.fromhex(remove_whitespace(hexstr)), 0x0):
+        op = f"{insn.mnemonic} {insn.op_str}".strip()
+        convertedinstructions.append(op)
+    if not convertedinstructions:
+        raise ArmHexError(f"Failed to disassemble hex: {hexstr} with {architecture}"
+                              f" architecture. Check that the hex comes from the right lib file at the "
+                              f"right offset, and that the architecture is correct.") from None
     # noinspection IncorrectFormatting
-    logging.log("Converted hex:\n" + " ".join(
-        hexinstructions) + f"\nto arm code with {architecture} architecture:\n" + "\n".join(convertedinstructions),
-                LoggingLevel.Debug, successinfo=True)
+    logging.log("Converted hex:\n" + " ".join(hexstr) + f"\nto arm code with {architecture} architecture:\n" +
+                "\n".join(convertedinstructions), LoggingLevel.Debug, successinfo=True)
     return convertedinstructions
+
+
+def is_relative_instruction(instruction: str, architecture):
+    """
+    Uses capstone and manual heuristics to check if an asm instruction is dynamic.
+    Should work for any architecture!
+    """
+    cs = make_cs(architecture)
+    # This is annoying. We need to assemble the instruction to hex, then disassemble it again to get capstone info.
+    cs_insns = tuple(cs.disasm(bytearray.fromhex(remove_whitespace(armtohex(instruction, architecture))), 0x0))
+    if len(cs_insns) != 1:
+        raise Exception(f"Instruction {instruction} is not one instruction (it is {len(cs_insns)}) with architecture"
+                        f" {architecture}")
+    cs_insn = cs_insns[0]
+    # noinspection IncorrectFormatting
+    is_relative = ("0x" in instruction or "#" in instruction) or (cs_insn.group(capstone.CS_GRP_CALL) or
+            cs_insn.group(capstone.CS_GRP_JUMP) or cs_insn.group(capstone.CS_GRP_BRANCH_RELATIVE))
+    logging.log(f"Instruction {instruction} determined to be {'relative' if is_relative else 'not relative'}",
+                LoggingLevel.Debug)
+    return is_relative
 
 
 def generate_aob(hexbytes: str, architecture: str, wildcard: str = "??", sep: str = " ", upper: bool = True) -> str:
@@ -201,14 +226,14 @@ def generate_aob(hexbytes: str, architecture: str, wildcard: str = "??", sep: st
     instructions = hextoarm(hexbytes, architecture)
     hexlist = []
     for instruction in instructions:
-        if instruction == "" or instruction.isspace():
-            continue
-        if "0x" in instruction or "#" in instruction:
-            hexlist.append(wildcard * 4)
+        instruction_hex = armtohex(instruction, architecture, sep, upper)
+        if is_relative_instruction(instruction, architecture):
+            hexlist.append(" ".join([wildcard] * bytecount(instruction_hex)))
         else:
-            hexlist.append(armtohex(instruction, architecture, sep, upper))
-    aob = sep.join(hexlist)
-    logging.log(f"Generated aob from hex:\n{aob}", LoggingLevel.Info, successinfo=True)
+            hexlist.append(instruction_hex)
+    # We want our separator in between every byte, so we do this little maneuver.
+    aob = sep.join(getbytes("".join(hexlist)))
+    logging.log(f"Generated aob from hex:\n{aob}", LoggingLevel.Important, successinfo=True)
     return aob
 
 
@@ -285,8 +310,6 @@ def getdecimalvaluesfromaob(aob: str, valuetypes: Optional[list[str]] = None) ->
                     # the offset of value from beginning of composite hex - the latter is the offset provided by
                     # getdecimalvaluesfromhex().
                     value["Offset"] = offset - bytecount(builder) + value["Offset"]
-                    assert aobbytes[value["Offset"]:value["Offset"] + HEXTODECIMALTYPES[value["Type"]]] == getbytes(
-                            value["Hex"]), "Internal bug - offset calculation failed"
                     values.append(value)
                 builder = ""
     logging.log(f"Got list of decimal values from aob:\n" + "\n".join([str(value) for value in values]),
